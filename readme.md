@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 ### Singleton
 - 싱글톤 클래스를 생성하려면 `Singleton` 메타 클래스로 지정해 주면 됩니다.
-- `use_class_name_only` 매개변수를 true로 지정하면 초기화 매개변수와 관계없이 클래스 이름만으로 싱글톤을 생성합니다. (전통적인 싱글톤과 동일, defaault는 false)
+- `use_class_name_only` 매개변수를 true로 지정하면 초기화 매개변수와 관계없이 클래스 이름만으로 싱글톤을 생성합니다. (전통적인 싱글톤과 동일, default는 false)
 ```python
 class SomeClass(metaclass=Singleton):
     def __init__(self, name):
@@ -32,7 +32,7 @@ class SomeClass(metaclass=Singleton):
 ### TtlSingleton
 - TTL 기반 싱글톤 클래스를 생성하려면 `TtlSingleton` 메타클래스를 사용하고 `ttl` 매개변수를 지정해 주세요.
 - ttl 매개변수는 인스턴스가 만료되기까지의 시간(초)을 나타냅니다. default는 60초입니다.
-- `use_class_name_only` 매개변수를 true로 지정하면 초기화 매개변수와 관계없이 클래스 이름만으로 싱글톤을 생성합니다. (전통적인 싱글톤과 동일, defaault는 false)
+- `use_class_name_only` 매개변수를 true로 지정하면 초기화 매개변수와 관계없이 클래스 이름만으로 싱글톤을 생성합니다. (전통적인 싱글톤과 동일, default는 false)
 ```python
 class SomeClass(metaclass=TtlSingleton, ttl=60):
     def __init__(self, name):
