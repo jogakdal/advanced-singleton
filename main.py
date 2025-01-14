@@ -1,6 +1,7 @@
 import time
 
-from src.singleton.singleton import TtlSingleton, Singleton
+from advanced_python_singleton.ttlsingleton import TtlSingleton
+
 
 if __name__ == '__main__':
     class TtlSingletonTest(metaclass=TtlSingleton, ttl=2):

@@ -1,22 +1,23 @@
 from setuptools import setup, find_packages
 
+with open("readme.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(
     name='advanced-python-singleton',
-    version='1.2',
-    description='Singleton & TtlSingleton meta-class',
+    version='1.2.1',
     author='jogakdal',
     author_email='jogakdal@gmail.com',
-    url='https://https://github.com/jogakdal/advanced-singleton',
+    description='Singleton & TtlSingleton meta-class',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url='https://github.com/jogakdal/advanced-singleton',
     install_requires=['expiringdict'],
     packages=find_packages(exclude=[]),
     keywords=['jogakdal', 'Singleton', 'TTL', 'metaclass'],
     python_requires='>=3.6',
-    package_data={},
-    zip_safe=False,
     classifiers=[
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3',
+        'Operating System :: OS Independent',
     ],
 )

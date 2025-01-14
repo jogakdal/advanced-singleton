@@ -1,2 +1,3 @@
 expiringdict
 setuptools
+advanced-python-singleton

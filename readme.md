@@ -9,7 +9,10 @@
 - **TtlSingleton**: `Singleton`을 확장하여 TTL을 지원하며, <b>지정된 시간이 지나면 인스턴스가 만료</b>되고 새로 생성됩니다.
 - 두 클래스 모두 `use_class_name_only` 매개변수를 true로 지정하면 초기화 매개변수와 관계없이 클래스 이름만으로 싱글톤을 생성할 수 있습니다. (전통적인 싱글톤과 동일)
 ## 설치
-
+```bash
+pip install advanced-python-singleton
+```
+`
 이 프로젝트를 사용하려면 저장소를 클론하고 필요한 종속성을 설치하십시오:
 
 ```sh
@@ -24,6 +27,9 @@ pip install -r requirements.txt
 - 싱글톤 클래스를 생성하려면 `Singleton` 메타 클래스로 지정해 주면 됩니다.
 - `use_class_name_only` 매개변수를 true로 지정하면 초기화 매개변수와 관계없이 클래스 이름만으로 싱글톤을 생성합니다. (전통적인 싱글톤과 동일, default는 false)
 ```python
+from advanced_python_singleton.singleton import Singleton
+
+
 class SomeClass(metaclass=Singleton):
     def __init__(self, name):
         self.name = name
@@ -34,6 +40,9 @@ class SomeClass(metaclass=Singleton):
 - ttl 매개변수는 인스턴스가 만료되기까지의 시간(초)을 나타냅니다. default는 60초입니다.
 - `use_class_name_only` 매개변수를 true로 지정하면 초기화 매개변수와 관계없이 클래스 이름만으로 싱글톤을 생성합니다. (전통적인 싱글톤과 동일, default는 false)
 ```python
+from advanced_python_singleton.ttlsingleton import TtlSingleton
+
+
 class SomeClass(metaclass=TtlSingleton, ttl=60):
     def __init__(self, name):
         self.name = name
@@ -45,6 +54,8 @@ class SomeClass(metaclass=TtlSingleton, ttl=60):
 
 ```python
 import time
+from advanced_python_singleton.ttlsingleton import TtlSingleton
+
 
 class TtlSingletonTest(metaclass=TtlSingleton, ttl=2):
     def __init__(self, name):
@@ -66,6 +77,10 @@ c = TtlSingletonTest('a')
 다음은 여러 케이스에 대한 테스트 코드입니다.
     
 ```python
+import time
+from advanced_python_singleton.ttlsingleton import TtlSingleton
+
+
 class TtlSingletonTest(metaclass=TtlSingleton, ttl=2):
     def __init__(self, name):
         self.name = name
@@ -126,15 +141,8 @@ assert instance1 == instance2
 assert instance1.value == 123
 assert instance2.value == 123
 ```
-테스트를 실행하려면 다음 명령어를 실행하십시오:
-
-```sh
-python -m unittest discover tests
-```
-
 ## 라이선스
 이 라이브러리는 누구나 사용할 수 있는 프리 소프트웨어입니다. 다만 코드를 수정할 경우 변경된 내용을 원작성자에게 통보해 주시면 감사하겠습니다.
 
 ## 작성자
 황용호(jogakdal@gmail.com)
-```
