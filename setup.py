@@ -6,7 +6,7 @@ setup(
     description='Singleton & TtlSingleton meta-class',
     author='jogakdal',
     author_email='jogakdal@gmail.com',
-    url='https://github.com/teddylee777/teddynote',
+    url='https://https://github.com/jogakdal/advanced-singleton',
     install_requires=['expiringdict'],
     packages=find_packages(exclude=[]),
     keywords=['jogakdal', 'Singleton', 'TTL', 'metaclass'],

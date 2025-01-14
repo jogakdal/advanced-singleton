@@ -13,7 +13,7 @@
 이 프로젝트를 사용하려면 저장소를 클론하고 필요한 종속성을 설치하십시오:
 
 ```sh
-git clone <repository-url>
+git clone https://github.com/jogakdal/advanced-singleton.git
 cd <repository-directory>
 pip install -r requirements.txt
 ```
