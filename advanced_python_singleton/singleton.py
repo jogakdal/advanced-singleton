@@ -16,34 +16,29 @@ class Singleton(type):
         셋 중 어느 하나라도 일치하지 않으면 새로운 인스턴스 생성
     사용법:
         class SomeClass(metaclass=Singleton):
-    version: v1.2
+    version: v1.3
     history:
+        [v1.3][2025/01/15] 싱글톤 캐시를 클래스 변수로 변경
         [v1.2][2025/01/13] 클래스 이름만으로도 동일한 인스턴스 여부를 파악하게 하는 옵션 추가(use_class_name_only)
         [v1.1][2024/06/12] 클래스 명 뿐만 아니라 생성자의 파라미터까지 일치해야 동일한 인스턴스로 판단
         [v1.0] 최초 작성
     """
 
+    _cache = {}
+
     def __new__(cls, name, bases, dct, **kwargs):
         dct['_use_class_name_only'] = kwargs.get('use_class_name_only', False)
         return super().__new__(cls, name, bases, dct)
-
-    def __init__(cls, name, bases, dct, **kwargs):
-        super().__init__(name, bases, dct, **kwargs)
-        cls._instances = cls._make_buffer(cls)
 
     def __call__(cls, *args, **kwargs):
         instance_key = cls if cls._use_class_name_only \
             else (cls, tuple(Singleton.__get_param_dict(cls, False, *args, **kwargs).items()))
 
-        if instance_key not in cls._instances:
+        if instance_key not in cls._cache:
             instance = super().__call__(*args, **kwargs)
-            cls._instances[instance_key] = instance
+            cls._cache[instance_key] = instance
 
-        return cls._instances[instance_key]
-
-    @staticmethod
-    def _make_buffer(cls):
-        return {}
+        return cls._cache[instance_key]
 
     @staticmethod
     def __get_param_dict(cls, include_self=False, *args, **kwargs):

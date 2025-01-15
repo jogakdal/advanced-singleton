@@ -43,7 +43,7 @@ class SomeClass(metaclass=Singleton):
 from advanced_python_singleton.ttlsingleton import TtlSingleton
 
 
-class SomeClass(metaclass=TtlSingleton, ttl=60):
+class SomeClass(metaclass=TtlSingleton, ttl=10):
     def __init__(self, name):
         self.name = name
 ```
@@ -54,34 +54,37 @@ class SomeClass(metaclass=TtlSingleton, ttl=60):
 
 ```python
 import time
+
+from advanced_python_singleton.singleton import Singleton
 from advanced_python_singleton.ttlsingleton import TtlSingleton
 
-
-class TtlSingletonTest(metaclass=TtlSingleton, ttl=2):
+# Singleton 테스트
+class SingletonWithParamExample(metaclass=Singleton):
     def __init__(self, name):
         self.name = name
-        print(f'{self.name} is created')
-
-# 인스턴스 생성
-a = TtlSingletonTest('a')
-b = TtlSingletonTest('b')
-
-# TTL이 만료될 때까지 대기
-time.sleep(2)
-
-# TTL 만료 후 새 인스턴스 생성
-c = TtlSingletonTest('a')
-```
-
-## 테스트
-다음은 여러 케이스에 대한 테스트 코드입니다.
-    
-```python
-import time
-from advanced_python_singleton.ttlsingleton import TtlSingleton
+        print(f'{self.name}({self}) is created')
 
 
-class TtlSingletonTest(metaclass=TtlSingleton, ttl=2):
+class SingletonWithoutParamExample(metaclass=Singleton, use_class_name_only=True):
+    def __init__(self, name):
+        self.name = name
+        print(f'{self.name}({self}) is created')
+
+
+a = SingletonWithParamExample('a')
+b = SingletonWithParamExample('b')
+c = SingletonWithParamExample('a')
+assert a != b
+assert a == c
+assert b == SingletonWithParamExample('b')
+
+a = SingletonWithoutParamExample('a')
+b = SingletonWithoutParamExample('b')
+assert a == b
+assert a == SingletonWithoutParamExample('c')
+
+# TtlSingleton 테스트
+class TtlSingletonExample(metaclass=TtlSingleton, ttl=2):
     def __init__(self, name):
         self.name = name
         print(f'    {self.name} is created')
@@ -89,21 +92,21 @@ class TtlSingletonTest(metaclass=TtlSingleton, ttl=2):
 
 class SingletonTest():
     def test(self, p):
-        return TtlSingletonTest(p)
+        return TtlSingletonExample(p)
 
 print('a creating')
-a = TtlSingletonTest('a')
+a = TtlSingletonExample('a')
 assert a.name == 'a'
 
 print('b creating')
-b = TtlSingletonTest('b')
+b = TtlSingletonExample('b')
 assert b.name == 'b'
 
 print('sleep 1 sec')
 time.sleep(1)
 
 print('a creating')
-c = TtlSingletonTest('a')
+c = TtlSingletonExample('a')
 assert a == c
 assert c.name == 'a'
 
@@ -111,7 +114,7 @@ print('sleep 2 sec')
 time.sleep(2)
 
 print('a creating')
-d = TtlSingletonTest('a')
+d = TtlSingletonExample('a')
 assert a != d  # 시간이 2초 이상 지났음으로 새로운 객체 생성
 
 print('a creating via SingletonTest()')
@@ -125,10 +128,35 @@ e = SingletonTest().test('a')
 assert d != e
 
 print('a creating')
-assert e == TtlSingletonTest('a')
+assert e == TtlSingletonExample('a')
+
+# TTL이 서로 다른 클래스 테스트
+class TtlSingletonExample_5(metaclass=TtlSingleton, ttl=5):
+    def __init__(self, name):
+        self.name = name
+
+class TtlSingletonExample_8(metaclass=TtlSingleton, ttl=8):
+    def __init__(self, name):
+        self.name = name
+
+a = TtlSingletonExample_5('a')
+b = TtlSingletonExample_8('a')
+assert a != b
+
+time.sleep(6)
+
+c = TtlSingletonExample_5('a')
+d = TtlSingletonExample_8('a')
+assert a != c
+assert b == d
+
+time.sleep(3)
+
+assert c == TtlSingletonExample_5('a')
+assert d != TtlSingletonExample_8('a')
+
 
 # use_class_name_only=True 테스트
-# class SingletonClassNameOnly(metaclass=Singleton, use_class_name_only=True):
 class SingletonClassNameOnly(metaclass=TtlSingleton, ttl=60, use_class_name_only=True):
     def __init__(self, name, value):
         self.name = name
