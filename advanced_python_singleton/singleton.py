@@ -43,7 +43,7 @@ class Singleton(type):
     @staticmethod
     def __get_param_dict(cls, include_self=False, *args, **kwargs):
         params = [
-            (p.name, p.default) for p in inspect.signature(cls.__init__).parameters.values()
+            (p.name, str(p.default)) for p in inspect.signature(cls.__init__).parameters.values()
             if include_self or p.name != 'self'
         ]
 
