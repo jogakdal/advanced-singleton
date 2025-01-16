@@ -1,4 +1,3 @@
-
 # Singleton 및 TtlSingleton 메타클래스
 
 이 프로젝트는 Python에서 싱글톤 클래스를 생성하기 위한 `Singleton` 및 `TtlSingleton` 메타클래스를 제공합니다. `TtlSingleton` 메타클래스는 `Singleton` 기능을 확장하여 지정된 시간이 지나면 인스턴스가 만료되는 TTL(Time-To-Live) 기능을 추가합니다.
@@ -168,6 +167,27 @@ instance2 = SingletonClassNameOnly('test', 456)
 assert instance1 == instance2
 assert instance1.value == 123
 assert instance2.value == 123
+
+# 인자 관련 테스트
+class SomeClass(metaclass=Singleton):
+    def __init__(self, user_name, user_id=0):
+        self.user_name = user_name
+        self.user_id = user_id
+
+
+class AnotherClass(metaclass=Singleton):
+    def __init__(self, user_name, user_id=0):
+        self.user_name = user_name
+        self.user_id = user_id
+
+assert SomeClass('abc', 1) == SomeClass('abc', 1)  # 클래스 명과 인자가 모두 같으면 같은 인스턴스가 되어야 한다.
+assert SomeClass('abc', 1) != AnotherClass('abc', 1)  # 클래스 명이 다르면 다른 인스턴스가 되어야 한다.
+assert SomeClass('abc', user_id=1) == SomeClass('abc', 1)  # 명시적 파라미터로 전달되어도 값이 같으면 같은 인스턴스가 되어야 한다.
+assert SomeClass('abc', 1) != SomeClass('abc', 2)  # 파라미터 값이 하나라도 다르면 다른 인스턴스가 되어야 한다.
+assert SomeClass('abc', user_id=1) != SomeClass('abc', 2)  # 파라미터 값이 하나라도 다르면 다른 인스턴스가 되어야 한다.
+assert SomeClass('abc') == SomeClass('abc', 0)  # 파라미터 디폴트 값과 동일한 값으로 전달되면 같은 인스턴스가 되어야 한다.
+assert SomeClass('abc') != SomeClass('abc', 1)  # 파라미터 디폴트 값과 다른 값으로 전달되면 다른 인스턴스가 되어야 한다.
+assert SomeClass('abc') == SomeClass('abc', user_id=0)  # 파라미터 디폴트 값과 동일한 값이 명시적으로 전달되어도 같은 인스턴스가 되어야 한다.
 ```
 ## 라이선스
 이 라이브러리는 누구나 사용할 수 있는 프리 소프트웨어입니다. 다만 코드를 수정할 경우 변경된 내용을 원작성자에게 통보해 주시면 감사하겠습니다.

@@ -5,7 +5,7 @@ with open("readme.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='advanced-python-singleton',
-    version='1.3.1',
+    version='1.3.2',
     author='황용호',
     author_email='jogakdal@gmail.com',
     description='Singleton & TtlSingleton meta-class',

@@ -41,19 +41,28 @@ class Singleton(type):
         return cls._cache[instance_key]
 
     @staticmethod
+    def __make_hashable(obj):
+        if isinstance(obj, (list, set)):
+            return tuple(Singleton.__make_hashable(i) for i in obj)
+        elif isinstance(obj, dict):
+            return frozenset((Singleton.__make_hashable(k), Singleton.__make_hashable(v)) for k, v in obj.items())
+        else:
+            return obj
+
+    @staticmethod
     def __get_param_dict(cls, include_self=False, *args, **kwargs):
         params = [
-            (p.name, str(p.default)) for p in inspect.signature(cls.__init__).parameters.values()
+            (p.name, Singleton.__make_hashable(p.default)) for p in inspect.signature(cls.__init__).parameters.values()
             if include_self or p.name != 'self'
         ]
 
         for arg_value, param in zip(args, params):
             param_name, _ = param
-            params[params.index(param)] = (param_name, arg_value)
+            params[params.index(param)] = (param_name, Singleton.__make_hashable(arg_value))
 
         params_dict = OrderedDict(params)
         for k, v in kwargs.items():
             if k in params_dict:
-                params_dict[k] = v
+                params_dict[k] = Singleton.__make_hashable(v)
 
         return params_dict
